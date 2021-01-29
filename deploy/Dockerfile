@@ -7,6 +7,9 @@ ENV APP_HOME=/news-parser/
 RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
 
-COPY /src /news-parser/src
+COPY Pipfile $APP_HOME
+COPY Pipfile.lock $APP_HOME
+RUN pip install pipenv
+RUN pipenv install --system
 
-CMD ["python", "src/hello.py"]
+COPY /src /news-parser/src
