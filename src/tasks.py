@@ -33,18 +33,16 @@ app.steps["consumer"].add(NewsConsumerStep)
 def send_fresh_news(last_news=None, producer=None):
     news = parse_pages(last_news)
 
-    if news:
+    if not news:
+        return
 
+    with app.producer_or_acquire(producer) as producer:
         for obj in news:
-            print(f"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$${obj.get('header')}$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
-
-        with app.producer_or_acquire(producer) as producer:
-            for obj in news:
-                producer.publish(
-                    {obj.get("header"): obj},
-                    serializer="json",
-                    exchange=fresh_news_queue.exchange,
-                    routing_key="fresh_news",
-                    declare=[fresh_news_queue],
-                    retry=True,
-                )
+            producer.publish(
+                {obj.get("header"): obj},
+                serializer="json",
+                exchange=fresh_news_queue.exchange,
+                routing_key="fresh_news",
+                declare=[fresh_news_queue],
+                retry=True,
+            )

@@ -2,7 +2,6 @@ from hashlib import md5
 
 import requests
 from bs4 import BeautifulSoup
-
 from dateutil.parser import parse
 
 
