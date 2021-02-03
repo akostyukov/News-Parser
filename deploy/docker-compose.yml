@@ -1,0 +1,12 @@
+services:
+  app:
+    build:
+      context: ../
+      dockerfile: deploy/Dockerfile
+    networks:
+      - rabbitNetwork
+
+networks:
+  rabbitNetwork:
+    external: true
+    name: rabbitNetwork
