@@ -3,6 +3,7 @@ services:
     build:
       context: ../
       dockerfile: deploy/Dockerfile
+    command: bash -c "cd src && celery -A tasks worker -l INFO"
     networks:
       - rabbitNetwork
 
